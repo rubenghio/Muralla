@@ -25,6 +25,8 @@ public class OAuthUtils {
     public static final String MEMBER_ID = "member_id";
     public static final String ENCODING = "UTF-8";
     public static final String AMP = "&";
+    public static final String EMPTY = "";
+    public static final String DOUBLE_QUOTE = "\"";
     private static final String HMAC_SHA1 = "HmacSHA1";
 
     public static String getSignature(String baseString, String consumerSecret,

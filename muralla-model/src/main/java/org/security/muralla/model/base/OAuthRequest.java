@@ -32,10 +32,10 @@ public class OAuthRequest {
 				|| !request.contains(OAUTH_AUTHORIZATION)) {
 			throw new Exception(CREDENTIALS_ERROR);
 		}
-		this.method = method;
-		this.url = url;
+		this.method = method.replace(OAuthUtils.DOUBLE_QUOTE, OAuthUtils.EMPTY);
+		this.url = url.replace(OAuthUtils.DOUBLE_QUOTE, OAuthUtils.EMPTY);
 		String params = request.replace(OAUTH_AUTHORIZATION, "")
-				.replace("\"", "").trim();
+				.replace(OAuthUtils.DOUBLE_QUOTE, OAuthUtils.EMPTY).trim();
 		this.paramMap = getMap(params);
 		this.paramList = getList(paramMap);
 	}
@@ -59,7 +59,8 @@ public class OAuthRequest {
 		for (String param : paramList) {
 			String[] paramCouple = param.split("=");
 			String key = paramCouple[0];
-			String value = URLDecoder.decode(paramCouple[1].replace("\"", ""),
+			String value = URLDecoder.decode(paramCouple[1].replace(
+					OAuthUtils.DOUBLE_QUOTE, OAuthUtils.EMPTY),
 					OAuthUtils.ENCODING);
 			map.put(key, value);
 		}
