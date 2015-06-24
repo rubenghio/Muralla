@@ -1,0 +1,17 @@
+= Muralla
+Framework pre-configurado para la implementación del estandar OAuth 1.0a (http://oauth.net/core/1.0a/) en aplicaciones WEB mediante comunicación REST
+
+Requisitos
+
+	JDK 1.7 (o superior)
+	MAVEN 3.x
+	Aplicacion(es) WEB RESTful
+
+Componentes
+	Model (muralla-model), el cual contiene las clases e interfaces de modelo de datos que se utilizan para enviar/recibir información, como así también algunos utilitarios
+	Service (muralla-service), el cual contiene las interfaces de servicios necesarios para el guardado y recuperación de los elementos (tokens, consumers, etc)
+	Resource (muralla-resource), el cual contiene los componentes JAX-RS para la obtención y verificación de tokens
+
+Componentes extras
+	Model JPA (muralla-model-jpa), el cual contiene una implementación de gestión de tokens utilizando una base de datos SQL como fuente de datos.
+	Service JPA (muralla-service-jpa), el cual contiene servicios de operaciones con base de datos SQL
