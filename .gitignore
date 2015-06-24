@@ -1,5 +1,19 @@
-target/**
-.classpath
+*.class
+**/.project
+**/.classpath
+**/.settings
+target
+**/test-output/**
+**/*~
+*~
+.settings
+bin
 .project
-.settings/**
-/target
+# Package Files #
+*.jar
+*.war
+*.ear
+**/*pom.xml.releaseBackup
+pom.xml.releaseBackup
+release.properties
+
