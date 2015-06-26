@@ -1,21 +1,39 @@
 package org.security.muralla.model.token;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import java.net.URLEncoder;
+import java.util.UUID;
 
-import javax.inject.Qualifier;
+import org.apache.log4j.Logger;
+import org.security.muralla.model.utils.OAuthUtils;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+public class TokenProviderDefault implements TokenProvider {
+	private static final Logger LOG = Logger
+			.getLogger(TokenProviderDefault.class);
 
-@Qualifier
-@Target({ TYPE, METHOD, PARAMETER, FIELD })
-@Retention(RUNTIME)
-@Documented
-public @interface TokenProviderDefault {
+	@Override
+	public String generateToken() throws Exception {
+		LOG.info("Generating TOKEN default...");
+		return URLEncoder.encode(
+				UUID.randomUUID().toString().replaceAll("-", ""),
+				OAuthUtils.ENCODING);
+	}
+
+	@Override
+	public String generateTokenSecret() throws Exception {
+		LOG.info("Generating TOKEN SECRET default...");
+		return URLEncoder.encode(
+				UUID.randomUUID().toString().replaceAll("-", ""),
+				OAuthUtils.ENCODING);
+	}
+
+	@Override
+	public void setTokenSeed(Object seed) {
+		LOG.warn("TOKEN DEFAULT. Seed will not be used!!!");
+	}
+
+	@Override
+	public void setTokenContent(Object content) {
+		LOG.warn("TOKEN DEFAULT. Content will not be used!!!");
+	}
 
 }

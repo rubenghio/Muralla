@@ -17,7 +17,6 @@ import org.security.muralla.model.base.AuthenticatedTokenRegistry;
 import org.security.muralla.model.base.OAuthResponse;
 import org.security.muralla.model.base.RequestTokenRegistry;
 import org.security.muralla.model.token.TokenProvider;
-import org.security.muralla.model.token.TokenProviderDefault;
 import org.security.muralla.service.TokenService;
 
 @Stateless
@@ -26,10 +25,10 @@ public class TokenServiceBean implements TokenService {
 	@PersistenceContext(unitName = "muralla-security-oauth")
 	private EntityManager em;
 	@Inject
-	private TokenProvider tokenProvider;
-	@Inject
-	@TokenProviderDefault
 	private TokenProvider tokenProviderDefault;
+	@Inject
+	@TokenProviderCustom
+	private TokenProvider tokenProviderCustom;
 
 	private void save(Object token) {
 		em.persist(token);
@@ -105,8 +104,8 @@ public class TokenServiceBean implements TokenService {
 	@Override
 	public OAuthResponse createAccessTokenResponse(Object content, Object seed)
 			throws Exception {
-		tokenProvider.setTokenContent(content);
-		tokenProvider.setTokenSeed(seed);
-		return new OAuthResponse(tokenProvider);
+		tokenProviderCustom.setTokenContent(content);
+		tokenProviderCustom.setTokenSeed(seed);
+		return new OAuthResponse(tokenProviderCustom);
 	}
 }
