@@ -25,6 +25,7 @@ import org.security.muralla.service.TokenService;
 public class TokenResource {
 	private static final Logger LOG = Logger.getLogger(TokenResource.class);
 	private static final String SIGNATURE_VALIDATION_ERROR = "Signatures do not match!!!";
+	private static final String VERIFIER_VALIDATION_ERROR = "Verifier does not match!!!";
 
 	@Inject
 	private TokenService tokenService;
@@ -98,6 +99,13 @@ public class TokenResource {
 			AuthenticatedTokenRegistry authenticatedTokenRegistry = tokenService
 					.getAuthenticatedToken(request
 							.getValue(OAuthUtils.OAUTH_TOKEN));
+
+			// Check if verifier is correct
+			if (!authenticatedTokenRegistry.getVerifier().equals(
+					request.getValue(OAuthUtils.OAUTH_VERIFIER))) {
+				return Response.status(Status.BAD_REQUEST)
+						.entity(VERIFIER_VALIDATION_ERROR).build();
+			}
 
 			String sign = OAuthUtils
 					.getSignature(request.getBaseString(),
