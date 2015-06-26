@@ -50,7 +50,7 @@ public class TokenServiceBean implements TokenService {
 		}
 		return list.get(0);
 	}
-	
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public void checkDuplicateRequest(String timestamp, String nonce)
@@ -79,5 +79,11 @@ public class TokenServiceBean implements TokenService {
 	@Override
 	public void saveAuthenticatedToken(AuthenticatedTokenRegistry token) {
 		save(new AuthenticatedTokenRegistryEntity(token));
+	}
+
+	@Override
+	public AccessTokenRegistry getAccessToken(String token) throws Exception {
+		return (AccessTokenRegistry) getToken(token,
+				AccessTokenRegistryEntity.class.getName());
 	}
 }

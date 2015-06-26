@@ -8,7 +8,7 @@ public class AccessTokenRegistry {
 	private String signatureMethod;
 	private String consumerKey;
 	private String requestToken;
-	private String accessToken;
+	private String token;
 	private String tokenSecret;
 	private String verifier;
 	private String signature;
@@ -29,7 +29,7 @@ public class AccessTokenRegistry {
 		this.tokenSecret = tokenSecret;
 		this.verifier = verifier;
 		this.signature = signature;
-		this.accessToken = accessToken;
+		this.token = accessToken;
 	}
 
 	public Long getId() {
@@ -112,11 +112,11 @@ public class AccessTokenRegistry {
 		this.signature = signature;
 	}
 
-	public String getAccessToken() {
-		return accessToken;
+	public String getToken() {
+		return token;
 	}
 
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
+	public void setToken(String token) {
+		this.token = token;
 	}
 }

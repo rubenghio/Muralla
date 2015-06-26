@@ -35,6 +35,7 @@
 		<module>muralla-resource-auth</module>
 		<module>muralla-resource-gen</module>
 		<module>muralla-resource-utils</module>
+		<module>muralla-resource-intercept</module>
 	</modules>
 
 	<dependencyManagement>

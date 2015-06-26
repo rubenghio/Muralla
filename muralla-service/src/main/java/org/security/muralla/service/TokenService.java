@@ -16,6 +16,9 @@ public interface TokenService {
 	public AuthenticatedTokenRegistry getAuthenticatedToken(String token)
 			throws Exception;
 
+	public AccessTokenRegistry getAccessToken(String token)
+			throws Exception;
+	
 	public void checkDuplicateRequest(String timestamp, String nonce)
 			throws Exception;
 }

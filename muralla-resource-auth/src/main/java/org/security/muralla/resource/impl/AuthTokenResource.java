@@ -18,8 +18,8 @@ import org.security.muralla.model.base.RequestTokenRegistry;
 import org.security.muralla.service.TokenService;
 
 @Path("/oauth")
-public class TokenResource {
-	private static final Logger LOG = Logger.getLogger(TokenResource.class);
+public class AuthTokenResource {
+	private static final Logger LOG = Logger.getLogger(AuthTokenResource.class);
 	@Inject
 	private Principal principal;
 

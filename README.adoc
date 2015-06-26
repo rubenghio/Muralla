@@ -8,7 +8,7 @@ Framework pre-configurado para la implementación del estandar OAuth 1.0a (http:
 *   JDK 1.7 (o superior)
 *   MAVEN 3.x
 *   Servidor de aplicaciones JEE6 compatible
-*   Aplicación de login que auspicie de proveedor de identidad (*'IDP'*) y aplicación que expone servicios REST segurizados (*'SP'*).
+*   Aplicación de login que auspicie de proveedor de identidad (*'IDP'*), aplicación que provee los tokens (*'SP'*) y aplicación que expone servicios REST segurizados.
 
 === _Componentes_
 
@@ -21,6 +21,7 @@ Framework pre-configurado para la implementación del estandar OAuth 1.0a (http:
 *   _Model JPA_ (*muralla-model-jpa*), el cual contiene una implementación de gestión de tokens utilizando una base de datos SQL como fuente de datos. Tener en consideración que para utilizar este componente se debe contar con un *persistence.xml* para poder utilizar entidades JPA2.
 *   _Service JPA_ (*muralla-service-jpa*), el cual contiene servicios de operaciones con base de datos SQL. Este componente utiliza una unidad de persistencia llamada *'muralla-security-oauth'*
 *   _OAuth utils_ (*muralla-resource-utils*), el cual contiene servicios REST para firmar un request en base a los datos provistos o dar de alta consumidores. Tener en cuenta que este componente es un punto crítico por lo que las cuestiones de seguridad en donde el mismo se despliegue dependerá de la aplicación que lo contenga.
+*   _OAuth interceptor_ (*muralla-resource-intercept*), el cual contiene un interceptor que captura los pedidos REST para validar y autorizar la ejecución de cada método.
 
 === _Instalación_
 
@@ -52,6 +53,20 @@ Para comenzar a interactuar y gestionar las autorizaciones mediante la utilizaci
 		<version>${muralla.version}</version>
 	</dependency>
 	
+	<dependency>
+		<groupId>org.security.muralla</groupId>
+		<artifactId>muralla-service-jpa</artifactId>
+		<version>${muralla.version}</version>
+	</dependency>
+
+*   En el *pom.xml* que corresponde a la aplicación que posee los servicios a segurizar:
+
+	<dependency>
+		<groupId>org.security.muralla</groupId>
+		<artifactId>muralla-resource-intercept</artifactId>
+		<version>${muralla.version}</version>
+	</dependency>
+
 	<dependency>
 		<groupId>org.security.muralla</groupId>
 		<artifactId>muralla-service-jpa</artifactId>

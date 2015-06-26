@@ -23,8 +23,8 @@ import org.security.muralla.service.ConsumerService;
 import org.security.muralla.service.TokenService;
 
 @Path("/oauth")
-public class TokenResource {
-	private static final Logger LOG = Logger.getLogger(TokenResource.class);
+public class GenTokenResource {
+	private static final Logger LOG = Logger.getLogger(GenTokenResource.class);
 	private static final String SIGNATURE_VALIDATION_ERROR = "Signatures do not match!!!";
 	private static final String VERIFIER_VALIDATION_ERROR = "Verifier does not match!!!";
 

@@ -26,7 +26,7 @@ public class AccessTokenRegistryEntity extends AccessTokenRegistry {
 		setTokenSecret(model.getTokenSecret());
 		setVerifier(model.getVerifier());
 		setSignature(model.getSignature());
-		setAccessToken(model.getAccessToken());
+		setToken(model.getToken());
 	}
 
 	@Id
@@ -87,7 +87,7 @@ public class AccessTokenRegistryEntity extends AccessTokenRegistry {
 
 	@Override
 	@Column(name = "access_token")
-	public String getAccessToken() {
-		return super.getAccessToken();
+	public String getToken() {
+		return super.getToken();
 	}
 }
