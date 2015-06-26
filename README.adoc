@@ -95,6 +95,7 @@ _HEADER:_ *Authorization: OAuth oauth_consumer_key="mySPapp",oauth_signature_met
 *   _Response_
 
 _TYPE:_ *TEXT/PLAIN*
+
 _CONTENT:_ *oauth_token={token1}&oauth_token_secret={token1Secret}&oauth_callback_confirmed=true*
 
 ==== Authorize token endpoint
@@ -110,6 +111,7 @@ _HOST:_ *{hostname}:{port}*
 *   _Response_
 
 _TYPE:_ *TEXT/PLAIN*
+
 _CONTENT:_ *260390798*
 
 ==== Access token endpoint
@@ -127,6 +129,7 @@ _HEADER:_ *Authorization: OAuth oauth_version="1.0", oauth_nonce="908433656", oa
 *   _Response_
 
 _TYPE:_ *TEXT/PLAIN*
+
 _CONTENT:_ *oauth_token={token2}&oauth_token_secret={token2Secret}&member_id={username}*
 
 ==== Signature service endpoint
@@ -163,6 +166,7 @@ El parámetro adicional enviado en el BODY llamado "*access*" se utiliza para de
 *   _Response_
 
 _TYPE:_ *TEXT/PLAIN*
+
 _CONTENT:_ *JDjkRPw8c687lZAfMQocpXqqD6c=*
 
 
