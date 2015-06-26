@@ -9,7 +9,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>muralla-resource-gen</artifactId>
+	<artifactId>muralla-resource-utils</artifactId>
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 

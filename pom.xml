@@ -25,6 +25,7 @@
 		<module>muralla-service-jpa</module>
 		<module>muralla-resource-auth</module>
 		<module>muralla-resource-gen</module>
+		<module>muralla-resource-utils</module>
 	</modules>
 
 	<dependencyManagement>

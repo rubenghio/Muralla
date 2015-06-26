@@ -1,8 +1,6 @@
 package org.security.muralla.resource.impl;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -132,41 +130,6 @@ public class TokenResource {
 			tokenService.saveAccessToken(accessTokenRegistry);
 
 			return Response.ok(response.toString()).build();
-		} catch (Exception e) {
-			LOG.error(e.getMessage());
-			return Response.status(Status.BAD_REQUEST).entity(e.getMessage())
-					.build();
-		}
-	}
-
-	@POST
-	@Path("/token_signature")
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response requestTokenSignature(
-			@FormParam("Authorization") String authorization,
-			@FormParam("Url") String url, @FormParam("Method") String method,
-			@FormParam("IsAccess") String access) {
-		try {
-			if (authorization == null || url == null || method == null
-					|| access == null) {
-				throw new Exception(
-						"Form parameters 'Authorization', 'Url', 'Method', 'IsAccess' are required!");
-			}
-
-			OAuthRequest request = new OAuthRequest(method, url, authorization);
-			OAuthConsumer consumer = tokenService.getConsumer(request
-					.getValue(OAuthUtils.OAUTH_CONSUMER_KEY));
-			String tokenSecret = OAuthUtils.EMPTY;
-			if (Boolean.TRUE.toString().equalsIgnoreCase(access)) {
-				RequestTokenRegistry requestTokenRegistry = tokenService
-						.getRequestToken(request
-								.getValue(OAuthUtils.OAUTH_TOKEN));
-				tokenSecret = requestTokenRegistry.getTokenSecret();
-			}
-			return Response.ok(
-					OAuthUtils.getSignature(request.getBaseString(),
-							consumer.getSecret(), tokenSecret)).build();
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
 			return Response.status(Status.BAD_REQUEST).entity(e.getMessage())

@@ -1,4 +1,3 @@
-
 Muralla
 -------
 
@@ -21,6 +20,7 @@ Framework pre-configurado para la implementación del estandar OAuth 1.0a (http:
 
 *   _Model JPA_ (*muralla-model-jpa*), el cual contiene una implementación de gestión de tokens utilizando una base de datos SQL como fuente de datos. Tener en consideración que para utilizar este componente se debe contar con un *persistence.xml* para poder utilizar entidades JPA2.
 *   _Service JPA_ (*muralla-service-jpa*), el cual contiene servicios de operaciones con base de datos SQL. Este componente utiliza una unidad de persistencia llamada *'muralla-security-oauth'*
+*   _OAuth utils_ (*muralla-resource-utils*), el cual contiene servicios REST para firmar un request en base a los datos provistos o dar de alta consumidores. Tener en cuenta que este componente es un punto crítico por lo que las cuestiones de seguridad en donde el mismo se despliegue dependerá de la aplicación que lo contenga.
 
 === _Instalación_
 
@@ -37,11 +37,7 @@ Para comenzar a interactuar y gestionar las autorizaciones mediante la utilizaci
 		<artifactId>muralla-resource-auth</artifactId>
 		<version>${muralla.version}</version>
 	</dependency>
-	
-	<!--
-	    Opcional
-	    Dependencia para utilización de componentes JPA2 (SQL)
-	-->
+
 	<dependency>
 		<groupId>org.security.muralla</groupId>
 		<artifactId>muralla-service-jpa</artifactId>
@@ -55,11 +51,21 @@ Para comenzar a interactuar y gestionar las autorizaciones mediante la utilizaci
 		<artifactId>muralla-resource-gen</artifactId>
 		<version>${muralla.version}</version>
 	</dependency>
+	
+	<dependency>
+		<groupId>org.security.muralla</groupId>
+		<artifactId>muralla-service-jpa</artifactId>
+		<version>${muralla.version}</version>
+	</dependency>
 
-	<!--
-	    Opcional
-	    Dependencia para utilización de componentes JPA2 (SQL)
-	-->
+*   En el *pom.xml* que corresponde a la aplicación donde se quiera desplegar los utilitarios OAuth (opcionales):
+
+	<dependency>
+		<groupId>org.security.muralla</groupId>
+		<artifactId>muralla-resource-utils</artifactId>
+		<version>${muralla.version}</version>
+	</dependency>
+	
 	<dependency>
 		<groupId>org.security.muralla</groupId>
 		<artifactId>muralla-service-jpa</artifactId>
@@ -70,3 +76,93 @@ Para comenzar a interactuar y gestionar las autorizaciones mediante la utilizaci
 *   Desplegar el/los binarios en el contenedor de aplicaciones
 
 === _Utilización_
+
+Una vez construidos los componentes y desplegados correctamente en el contenedor de aplicaciones, el framework desplegará el siguiente conjunto de servicios REST:
+
+==== Request token endpoint
+
+URL que se utilizará para la solicitud de un token NO autorizado. En el mismo deberán ser enviado en el HEADER todos los parámetros requeridos por el estandar y firmados con la clave del consumidor.
+Tanto la "oauth_consumer_key" como la clave serán provistas por el proveedor del servicio de OAuth.
+
+*   _Request_
+
+_POST:_ */{mySPapp}/{myRestBind}/oauth/request_token*
+
+_HOST:_ *{hostname}:{port}*
+
+_HEADER:_ *Authorization: OAuth oauth_consumer_key="mySPapp",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1234567",oauth_nonce="abc123",oauth_version="1.0",oauth_signature="z9%252FwPeNNLKw%252BhRNg0LwpkaMROz8%253D"*
+
+*   _Response_
+
+_TYPE:_ *TEXT/PLAIN*
+_CONTENT:_ *oauth_token={token1}&oauth_token_secret={token1Secret}&oauth_callback_confirmed=true*
+
+==== Authorize token endpoint
+
+URL en la cual el usuario, mediante la utilización del token obtenido en el paso anterior, autorizará la aplicación y obtendra un valor de verificación.
+
+*   _Request_
+
+_GET:_ */{myIDPapp}/{myRestBind}/oauth/authorize?oauth_token=token1*
+
+_HOST:_ *{hostname}:{port}*
+
+*   _Response_
+
+_TYPE:_ *TEXT/PLAIN*
+_CONTENT:_ *260390798*
+
+==== Access token endpoint
+
+URL que es utilizada para la solicitud de un token de acceso, el cual será el que se utilizará para realizar los pedidos a los recursos segurizados. Los parámetros enviados en este POST deberán ser firmados por la unión de la clave del consumidor y la clave enviada por el sistema en la respuesta anterior. Para nuestro caso de ejemplo, "token1Secret" por lo que si asumimos que la clave del consumidor es "secret", entonces, la nueva clave sería: *secret&token1Secret*
+
+*   _Request_
+
+_POST:_ */{mySPapp}/{myRestBind}/oauth/access_token*
+
+_HOST:_ *{hostname}:{port}*
+
+_HEADER:_ *Authorization: OAuth oauth_version="1.0", oauth_nonce="908433656", oauth_signature_method="HMAC-SHA1", oauth_consumer_key="mySPapp", oauth_token="token1", oauth_verifier="260390798", oauth_timestamp="1435322081"*
+
+*   _Response_
+
+_TYPE:_ *TEXT/PLAIN*
+_CONTENT:_ *oauth_token={token2}&oauth_token_secret={token2Secret}&member_id={username}*
+
+==== Signature service endpoint
+
+URL que sirve como facilidad para que el proveedor de tokens (SP) nos devuelva la firma correspondiente al request que queremos hacer en base a la clave privada que fué asociada al consumidor (oauth_consumer_key), la cual luego deberá ser anexada al HEADER en el POST correspondiente
+
+*   _Request_
+
+_POST:_ */{myUtilsApp}/{myRestBind}/oauthUtils/token_signature*
+
+_HOST:_ *{hostname}:{port}*
+
+_HEADER:_ *Authorization: OAuth oauth_version="1.0", oauth_nonce="908433656", oauth_signature_method="HMAC-SHA1", oauth_consumer_key="mySPapp", oauth_token="token1", oauth_verifier="260390798", oauth_timestamp="1435322081"*
+
+_BODY:_ *{"url":"http://localhost:8080/col-prestamo-rest/service/oauth/request_token", "method":"POST", "access":"false"}*
+
+.IMPORTANTE
+****
+En OAuth 1.0a es preciso firmar el request compuesto por 3 partes separadas por "*&*":
+
+_REQUEST_TYPE_
+
+_URL_
+
+_OAUTH_PARAMS_
+
+*Por ejemplo*
+
+_POST&http%3A%2F%2Flocalhost%3A8080%2Fcol-prestamo-rest%2Fservice%2Foauth%2Frequest_token&oauth_callback%3Doob%26oauth_consumer_key%3DmySPapp%26oauth_nonce%3D3400183167%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1435325772%26oauth_version%3D1.0_
+
+El parámetro adicional enviado en el BODY llamado "*access*" se utiliza para determinar si el proceso de firma tiene que usar las claves del consumidor y del token concatenadas. SOLO en el caso de la firma para el "Request token" NO se utilizan claves concatenadas por lo que el valor es "false"
+****
+
+*   _Response_
+
+_TYPE:_ *TEXT/PLAIN*
+_CONTENT:_ *JDjkRPw8c687lZAfMQocpXqqD6c=*
+
+
