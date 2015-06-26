@@ -10,11 +10,9 @@ import javax.persistence.Query;
 
 import org.security.muralla.entity.AccessTokenRegistryEntity;
 import org.security.muralla.entity.AuthenticatedTokenRegistryEntity;
-import org.security.muralla.entity.OAuthConsumerEntity;
 import org.security.muralla.entity.RequestTokenRegistryEntity;
 import org.security.muralla.model.base.AccessTokenRegistry;
 import org.security.muralla.model.base.AuthenticatedTokenRegistry;
-import org.security.muralla.model.base.OAuthConsumer;
 import org.security.muralla.model.base.RequestTokenRegistry;
 import org.security.muralla.service.TokenService;
 
@@ -52,16 +50,7 @@ public class TokenServiceBean implements TokenService {
 		}
 		return list.get(0);
 	}
-
-	@Override
-	public OAuthConsumer getConsumer(String id) throws Exception {
-		OAuthConsumer consumer = em.find(OAuthConsumerEntity.class, id);
-		if (consumer == null) {
-			throw new Exception("Client does not exists!!!");
-		}
-		return consumer;
-	}
-
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	public void checkDuplicateRequest(String timestamp, String nonce)

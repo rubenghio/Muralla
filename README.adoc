@@ -144,6 +144,8 @@ _HOST:_ *{hostname}:{port}*
 
 _HEADER:_ *Authorization: OAuth oauth_version="1.0", oauth_nonce="908433656", oauth_signature_method="HMAC-SHA1", oauth_consumer_key="mySPapp", oauth_token="token1", oauth_verifier="260390798", oauth_timestamp="1435322081"*
 
+_Content-Type:_ *APPLICATION/JSON*
+
 _BODY:_ *{"url":"http://localhost:8080/col-prestamo-rest/service/oauth/request_token", "method":"POST", "access":"false"}*
 
 .IMPORTANTE
@@ -170,3 +172,22 @@ _TYPE:_ *TEXT/PLAIN*
 _CONTENT:_ *JDjkRPw8c687lZAfMQocpXqqD6c=*
 
 
+==== Consumer service endpoint
+
+URL que sirve como facilidad para dar de alta consumidores
+
+*   _Request_
+
+_POST:_ */{myUtilsApp}/{myRestBind}/oauthUtils/consumer*
+
+_HOST:_ *{hostname}:{port}*
+
+_Content-Type:_ *APPLICATION/JSON*
+
+_BODY:_ *{"name":"mySPapp"}*
+
+*   _Response_
+
+_TYPE:_ *APPLICATION/JSON*
+
+_CONTENT:_ *{"consumerKey":"82c9240d584a41f28b733ef6ae4a0973","name":"mySPapp","secret":"652b27e1ceb3487f9a207575286830b7"}*

@@ -2,7 +2,6 @@ package org.security.muralla.service;
 
 import org.security.muralla.model.base.AccessTokenRegistry;
 import org.security.muralla.model.base.AuthenticatedTokenRegistry;
-import org.security.muralla.model.base.OAuthConsumer;
 import org.security.muralla.model.base.RequestTokenRegistry;
 
 public interface TokenService {
@@ -16,8 +15,6 @@ public interface TokenService {
 
 	public AuthenticatedTokenRegistry getAuthenticatedToken(String token)
 			throws Exception;
-
-	public OAuthConsumer getConsumer(String id) throws Exception;
 
 	public void checkDuplicateRequest(String timestamp, String nonce)
 			throws Exception;

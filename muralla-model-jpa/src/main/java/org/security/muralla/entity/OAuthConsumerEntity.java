@@ -10,6 +10,16 @@ import org.security.muralla.model.base.OAuthConsumer;
 @Entity
 @Table(name = "oauth_consumer")
 public class OAuthConsumerEntity extends OAuthConsumer {
+	public OAuthConsumerEntity() {
+		super();
+	}
+
+	public OAuthConsumerEntity(OAuthConsumer model) {
+		setConsumerKey(model.getConsumerKey());
+		setName(model.getName());
+		setSecret(model.getSecret());
+	}
+	
 	@Id
 	@Column(name = "consumer_key")
 	@Override

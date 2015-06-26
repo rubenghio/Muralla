@@ -19,6 +19,7 @@ import org.security.muralla.model.base.OAuthRequest;
 import org.security.muralla.model.base.OAuthResponse;
 import org.security.muralla.model.base.RequestTokenRegistry;
 import org.security.muralla.model.utils.OAuthUtils;
+import org.security.muralla.service.ConsumerService;
 import org.security.muralla.service.TokenService;
 
 @Path("/oauth")
@@ -29,6 +30,8 @@ public class TokenResource {
 
 	@Inject
 	private TokenService tokenService;
+	@Inject
+	private ConsumerService consumerService;
 	@Context
 	private UriInfo uriInfo;
 	private static final String POST = "POST";
@@ -42,7 +45,7 @@ public class TokenResource {
 			// Check if consumer exists
 			OAuthRequest request = new OAuthRequest(POST, uriInfo
 					.getRequestUri().toASCIIString(), authorization);
-			OAuthConsumer consumer = tokenService.getConsumer(request
+			OAuthConsumer consumer = consumerService.getConsumer(request
 					.getValue(OAuthUtils.OAUTH_CONSUMER_KEY));
 
 			String sign = OAuthUtils.getSignature(request.getBaseString(),
@@ -92,7 +95,7 @@ public class TokenResource {
 		try {
 			OAuthRequest request = new OAuthRequest(POST, uriInfo
 					.getRequestUri().toASCIIString(), authorization);
-			OAuthConsumer consumer = tokenService.getConsumer(request
+			OAuthConsumer consumer = consumerService.getConsumer(request
 					.getValue(OAuthUtils.OAUTH_CONSUMER_KEY));
 			RequestTokenRegistry requestTokenRegistry = tokenService
 					.getRequestToken(request.getValue(OAuthUtils.OAUTH_TOKEN));
