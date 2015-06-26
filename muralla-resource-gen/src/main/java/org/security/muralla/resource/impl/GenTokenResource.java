@@ -1,5 +1,8 @@
 package org.security.muralla.resource.impl;
 
+import java.net.URLEncoder;
+import java.util.UUID;
+
 import javax.inject.Inject;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -63,7 +66,10 @@ public class GenTokenResource {
 					request.getValue(OAuthUtils.OAUTH_NONCE));
 
 			// Generate request token
-			OAuthResponse response = new OAuthResponse();
+			String tokenDefault = URLEncoder.encode(UUID.randomUUID()
+					.toString().replaceAll("-", ""), OAuthUtils.ENCODING);
+			OAuthResponse response = tokenService.createRequestTokenResponse(
+					tokenDefault, null);
 			response.addParameter(OAuthUtils.OAUTH_CALLBACK_CONFIRMED,
 					Boolean.TRUE.toString());
 
@@ -122,9 +128,8 @@ public class GenTokenResource {
 			}
 
 			// Create Access Token
-			OAuthResponse response = new OAuthResponse();
-			response.addParameter(OAuthUtils.MEMBER_ID,
-					authenticatedTokenRegistry.getUsername());
+			OAuthResponse response = tokenService.createAccessTokenResponse(
+					authenticatedTokenRegistry.getUsername(), null);
 
 			// Save access token generated in the database
 			AccessTokenRegistry accessTokenRegistry = new AccessTokenRegistry(

@@ -2,6 +2,7 @@ package org.security.muralla.service;
 
 import org.security.muralla.model.base.AccessTokenRegistry;
 import org.security.muralla.model.base.AuthenticatedTokenRegistry;
+import org.security.muralla.model.base.OAuthResponse;
 import org.security.muralla.model.base.RequestTokenRegistry;
 
 public interface TokenService {
@@ -21,4 +22,8 @@ public interface TokenService {
 	
 	public void checkDuplicateRequest(String timestamp, String nonce)
 			throws Exception;
+	
+	public OAuthResponse createRequestTokenResponse(Object content, Object seed) throws Exception;
+	
+	public OAuthResponse createAccessTokenResponse(Object content, Object seed) throws Exception;
 }

@@ -15,6 +15,7 @@
 
 	<properties>
 		<hibernate.version>4.3.10.Final</hibernate.version>
+		<resteasy.version>2.3.7.Final</resteasy.version>
 	</properties>
 
 	<dependencies>
@@ -44,6 +45,21 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate.version}</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jackson-provider</artifactId>
+			<version>${resteasy.version}</version>
 		</dependency>
 	</dependencies>
 </project>

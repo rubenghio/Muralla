@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -13,7 +14,10 @@ import org.security.muralla.entity.AuthenticatedTokenRegistryEntity;
 import org.security.muralla.entity.RequestTokenRegistryEntity;
 import org.security.muralla.model.base.AccessTokenRegistry;
 import org.security.muralla.model.base.AuthenticatedTokenRegistry;
+import org.security.muralla.model.base.OAuthResponse;
 import org.security.muralla.model.base.RequestTokenRegistry;
+import org.security.muralla.model.token.TokenProvider;
+import org.security.muralla.model.token.TokenProviderDefault;
 import org.security.muralla.service.TokenService;
 
 @Stateless
@@ -21,6 +25,11 @@ import org.security.muralla.service.TokenService;
 public class TokenServiceBean implements TokenService {
 	@PersistenceContext(unitName = "muralla-security-oauth")
 	private EntityManager em;
+	@Inject
+	private TokenProvider tokenProvider;
+	@Inject
+	@TokenProviderDefault
+	private TokenProvider tokenProviderDefault;
 
 	private void save(Object token) {
 		em.persist(token);
@@ -85,5 +94,19 @@ public class TokenServiceBean implements TokenService {
 	public AccessTokenRegistry getAccessToken(String token) throws Exception {
 		return (AccessTokenRegistry) getToken(token,
 				AccessTokenRegistryEntity.class.getName());
+	}
+
+	@Override
+	public OAuthResponse createRequestTokenResponse(Object content, Object seed)
+			throws Exception {
+		return new OAuthResponse(tokenProviderDefault);
+	}
+
+	@Override
+	public OAuthResponse createAccessTokenResponse(Object content, Object seed)
+			throws Exception {
+		tokenProvider.setTokenContent(content);
+		tokenProvider.setTokenSeed(seed);
+		return new OAuthResponse(tokenProvider);
 	}
 }
