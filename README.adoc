@@ -23,6 +23,11 @@ Framework pre-configurado para la implementación del estandar OAuth 1.0a (http:
 *   _OAuth utils_ (*muralla-resource-utils*), el cual contiene servicios REST para firmar un request en base a los datos provistos o dar de alta consumidores. Tener en cuenta que este componente es un punto crítico por lo que las cuestiones de seguridad en donde el mismo se despliegue dependerá de la aplicación que lo contenga.
 *   _OAuth interceptor_ (*muralla-resource-intercept*), el cual contiene un interceptor que captura los pedidos REST para validar y autorizar la ejecución de cada método.
 
+=== Diagrama de secuencia
+
+[[img-sequence]]
+image::sequenceDiagram.png[caption="Figura 1: ", title="Diagrama de secuencia", alt="Diagrama de secuencia", width="500", height="400", align="center"]
+
 === _Instalación_
 
 Para comenzar a interactuar y gestionar las autorizaciones mediante la utilización de tokens, es preciso:
