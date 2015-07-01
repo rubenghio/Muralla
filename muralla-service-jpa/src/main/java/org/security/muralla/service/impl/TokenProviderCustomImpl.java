@@ -26,10 +26,8 @@ public class TokenProviderCustomImpl implements TokenProvider {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("username", username);
 		map.put("timestamp", System.currentTimeMillis());
-		List<String> roles = new ArrayList<String>();
-		roles.add("manager");
-		roles.add("prueba");
-		map.put("roles", roles);
+
+		map.put("roles", getRoles(username));
 		ObjectMapper mapper = new ObjectMapper();
 		Base64 base64 = new Base64();
 		byte[] encodedToken = base64.encode(mapper.writeValueAsString(map)
@@ -54,5 +52,12 @@ public class TokenProviderCustomImpl implements TokenProvider {
 	public void setTokenContent(Object content) {
 		LOG.info("Setting 'content' to generate token...");
 		this.content = content;
+	}
+	
+	private List<String> getRoles(String username) {
+		List<String> roles = new ArrayList<String>();
+		roles.add("BanFamiliar");
+		roles.add("admin");
+		return roles;
 	}
 }

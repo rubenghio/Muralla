@@ -6,9 +6,9 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.security.muralla.model.utils.OAuthUtils;
 
-public class TokenProviderDefault implements TokenProvider {
+public class TokenProviderDefaultImpl implements TokenProvider {
 	private static final Logger LOG = Logger
-			.getLogger(TokenProviderDefault.class);
+			.getLogger(TokenProviderDefaultImpl.class);
 
 	@Override
 	public String generateToken() throws Exception {

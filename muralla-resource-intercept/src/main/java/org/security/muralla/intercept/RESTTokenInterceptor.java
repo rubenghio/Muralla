@@ -2,10 +2,12 @@ package org.security.muralla.intercept;
 
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HttpMethod;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.WebApplicationException;
@@ -16,7 +18,9 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ResourceMethod;
@@ -40,6 +44,8 @@ public class RESTTokenInterceptor implements PreProcessInterceptor,
 	private static final String SIGNATURE_VALIDATION_ERROR = "Signatures do not match!!!";
 	private static final ServerResponse ACCESS_DENIED = new ServerResponse(
 			"Access denied for this resource", 401, new Headers<Object>());
+	private static final ServerResponse ACCESS_FORBIDDEN = new ServerResponse(
+			"Nobody can access this resource", 403, new Headers<Object>());
 	private static final ServerResponse SERVER_ERROR = new ServerResponse(
 			"INTERNAL SERVER ERROR", 500, new Headers<Object>());
 	private final static String AUTH_PRE_KEY = "OAuth";
@@ -53,6 +59,7 @@ public class RESTTokenInterceptor implements PreProcessInterceptor,
 	private static final Logger LOG = Logger
 			.getLogger(SecurityInterceptor.class);
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ServerResponse preProcess(HttpRequest request,
 			ResourceMethod methodInvoked) throws Failure,
@@ -76,13 +83,13 @@ public class RESTTokenInterceptor implements PreProcessInterceptor,
 
 		String httpMethod = "";
 		if (method.isAnnotationPresent(POST.class)) {
-			httpMethod = "POST";
+			httpMethod = HttpMethod.POST;
 		} else if (method.isAnnotationPresent(GET.class)) {
-			httpMethod = "GET";
+			httpMethod = HttpMethod.GET;
 		} else if (method.isAnnotationPresent(PUT.class)) {
-			httpMethod = "PUT";
+			httpMethod = HttpMethod.PUT;
 		} else if (method.isAnnotationPresent(DELETE.class)) {
-			httpMethod = "DELETE";
+			httpMethod = HttpMethod.DELETE;
 		} else {
 			LOG.error("HTTP method type does not exist. Methods allow: GET, POST, PUT, DELETE");
 			return SERVER_ERROR;
@@ -104,6 +111,28 @@ public class RESTTokenInterceptor implements PreProcessInterceptor,
 			if (!sign.equals(oauthRequest.getValue(OAuthUtils.OAUTH_SIGNATURE))) {
 				LOG.error(SIGNATURE_VALIDATION_ERROR);
 				return SERVER_ERROR;
+			}
+			
+			ObjectMapper mapper = new ObjectMapper();
+			byte[] json = Base64.decodeBase64(accessTokenRegistry.getToken().getBytes());
+			Map<String, Object> map = mapper.readValue(json, Map.class);
+			List<String> roles = (List<String>)map.get("roles");
+			
+			//Check REST roles allowed
+			if (method.isAnnotationPresent(RESTRolesAllowed.class)) {
+				RESTRolesAllowed rolesAnnotation = method
+						.getAnnotation(RESTRolesAllowed.class);
+				if (roles.isEmpty() && rolesAnnotation.value().length > 0) {
+					// User does not have any ROLE
+					return ACCESS_FORBIDDEN;
+				}
+				for (String rol : rolesAnnotation.value()) {
+					if (roles.contains(rol)) {
+						return null;
+					}
+				}
+				// User does not have the ROLE needed
+				return ACCESS_DENIED;
 			}
 		} catch (Exception e) {
 			LOG.error(e.getMessage());

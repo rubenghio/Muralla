@@ -7,14 +7,14 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.security.muralla.model.token.TokenProvider;
-import org.security.muralla.model.token.TokenProviderDefault;
+import org.security.muralla.model.token.TokenProviderDefaultImpl;
 import org.security.muralla.model.utils.OAuthUtils;
 
 public class OAuthResponse {
 	private List<NameValuePair> parameters = new LinkedList<NameValuePair>();
 
 	public OAuthResponse() throws Exception {
-		this(new TokenProviderDefault());
+		this(new TokenProviderDefaultImpl());
 	}
 
 	public OAuthResponse(TokenProvider tokenProvider) throws Exception {
