@@ -29,6 +29,12 @@
 		<maven.release.plugin>2.5.2</maven.release.plugin>
 	</properties>
 
+	<scm>
+		<url>https://github.com/rubenghio/muralla.git</url>
+		<connection>scm:git:git://github.com/rubenghio/muralla.git</connection>
+		<developerConnection>scm:git:git@github.com:rubenghio/muralla.git</developerConnection>
+	</scm>
+
 	<modules>
 		<module>muralla-model</module>
 		<module>muralla-model-jpa</module>
