@@ -13,10 +13,6 @@
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 
-	<properties>
-		<resteasy.version>2.3.7.Final</resteasy.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.jboss.spec.javax.ws.rs</groupId>
