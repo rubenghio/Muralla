@@ -142,7 +142,8 @@ public class GenTokenResource {
 					response.getTokenSecret(),
 					request.getValue(OAuthUtils.OAUTH_VERIFIER),
 					request.getValue(OAuthUtils.OAUTH_SIGNATURE),
-					response.getToken());
+					response.getToken(),
+					authenticatedTokenRegistry.getRoles());
 			tokenService.saveAccessToken(accessTokenRegistry);
 
 			return Response.ok(response.toString()).build();

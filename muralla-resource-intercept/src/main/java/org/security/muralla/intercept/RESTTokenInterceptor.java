@@ -2,7 +2,6 @@ package org.security.muralla.intercept;
 
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.ws.rs.DELETE;
@@ -18,9 +17,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ResourceMethod;
@@ -59,7 +56,6 @@ public class RESTTokenInterceptor implements PreProcessInterceptor,
 	private static final Logger LOG = Logger
 			.getLogger(SecurityInterceptor.class);
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public ServerResponse preProcess(HttpRequest request,
 			ResourceMethod methodInvoked) throws Failure,
@@ -112,12 +108,9 @@ public class RESTTokenInterceptor implements PreProcessInterceptor,
 				LOG.error(SIGNATURE_VALIDATION_ERROR);
 				return SERVER_ERROR;
 			}
-			
-			ObjectMapper mapper = new ObjectMapper();
-			byte[] json = Base64.decodeBase64(accessTokenRegistry.getToken().getBytes());
-			Map<String, Object> map = mapper.readValue(json, Map.class);
-			List<String> roles = (List<String>)map.get("roles");
-			
+
+			List<String> roles = accessTokenRegistry.getRoles();
+
 			//Check REST roles allowed
 			if (method.isAnnotationPresent(RESTRolesAllowed.class)) {
 				RESTRolesAllowed rolesAnnotation = method

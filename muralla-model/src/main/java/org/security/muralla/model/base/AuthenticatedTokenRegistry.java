@@ -1,5 +1,7 @@
 package org.security.muralla.model.base;
 
+import java.util.List;
+
 public class AuthenticatedTokenRegistry {
 
 	private Long id;
@@ -9,18 +11,21 @@ public class AuthenticatedTokenRegistry {
 	private String nonce;
 	private String verifier;
 	private String token;
+	private List<String> roles;
 
 	public AuthenticatedTokenRegistry() {
 	}
-	
+
 	public AuthenticatedTokenRegistry(String consumerKey, String username,
-			String timestamp, String nonce, String verifier, String token) {
+			String timestamp, String nonce, String verifier, String token,
+			List<String> roles) {
 		this.consumerKey = consumerKey;
 		this.username = username;
 		this.timestamp = timestamp;
 		this.nonce = nonce;
 		this.verifier = verifier;
 		this.token = token;
+		this.roles = roles;
 	}
 
 	public Long getId() {
@@ -77,5 +82,13 @@ public class AuthenticatedTokenRegistry {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 }

@@ -26,9 +26,6 @@ public class TokenServiceBean implements TokenService {
 	private EntityManager em;
 	@Inject
 	private TokenProvider tokenProviderDefault;
-	@Inject
-	@TokenProviderCustom
-	private TokenProvider tokenProviderCustom;
 
 	private void save(Object token) {
 		em.persist(token);
@@ -104,8 +101,6 @@ public class TokenServiceBean implements TokenService {
 	@Override
 	public OAuthResponse createAccessTokenResponse(Object content, Object seed)
 			throws Exception {
-		tokenProviderCustom.setTokenContent(content);
-		tokenProviderCustom.setTokenSeed(seed);
-		return new OAuthResponse(tokenProviderCustom);
+		return new OAuthResponse(tokenProviderDefault);
 	}
 }

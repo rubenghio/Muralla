@@ -1,10 +1,16 @@
 package org.security.muralla.entity;
 
+import java.util.List;
+
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import org.security.muralla.model.base.AccessTokenRegistry;
@@ -27,6 +33,7 @@ public class AccessTokenRegistryEntity extends AccessTokenRegistry {
 		setVerifier(model.getVerifier());
 		setSignature(model.getSignature());
 		setToken(model.getToken());
+		setRoles(model.getRoles());
 	}
 
 	@Id
@@ -89,5 +96,12 @@ public class AccessTokenRegistryEntity extends AccessTokenRegistry {
 	@Column(name = "access_token")
 	public String getToken() {
 		return super.getToken();
+	}
+	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "oauth_access_token_roles_registry", joinColumns = @JoinColumn(name = "ID"))
+	@Column(name = "rol")
+	public List<String> getRoles() {
+		return super.getRoles();
 	}
 }
