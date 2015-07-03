@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.security.muralla</groupId>
 		<artifactId>muralla</artifactId>
-		<version>redhat-jboss-eap-6.2-libs-1.0.0</version>
+		<version>redhat-jboss-eap-6.2-libs-1.0.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>muralla-resource-utils</artifactId>
