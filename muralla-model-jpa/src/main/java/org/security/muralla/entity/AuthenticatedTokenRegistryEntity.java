@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import org.security.muralla.model.base.AuthenticatedTokenRegistry;
 
 @Entity
-@Table(name = "oauth_authenticated_token_registry")
+@Table(name = "oauth_authenticated")
 public class AuthenticatedTokenRegistryEntity extends
 		AuthenticatedTokenRegistry {
 
@@ -75,7 +75,7 @@ public class AuthenticatedTokenRegistryEntity extends
 	}
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "oauth_authenticated_token_roles_registry", joinColumns = @JoinColumn(name = "id"))
+	@CollectionTable(name = "oauth_authenticated_rol", joinColumns = @JoinColumn(name = "id"))
 	@Column(name = "rol")
 	public List<String> getRoles() {
 		return super.getRoles();

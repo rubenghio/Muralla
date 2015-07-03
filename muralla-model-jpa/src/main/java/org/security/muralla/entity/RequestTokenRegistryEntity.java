@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import org.security.muralla.model.base.RequestTokenRegistry;
 
 @Entity
-@Table(name = "oauth_request_token_registry")
+@Table(name = "oauth_request")
 public class RequestTokenRegistryEntity extends RequestTokenRegistry {
 
 	public RequestTokenRegistryEntity() {
