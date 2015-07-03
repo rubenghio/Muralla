@@ -75,7 +75,7 @@ public class AuthenticatedTokenRegistryEntity extends
 	}
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "oauth_authenticated_token_roles_registry", joinColumns = @JoinColumn(name = "ID"))
+	@CollectionTable(name = "oauth_authenticated_token_roles_registry", joinColumns = @JoinColumn(name = "id"))
 	@Column(name = "rol")
 	public List<String> getRoles() {
 		return super.getRoles();
