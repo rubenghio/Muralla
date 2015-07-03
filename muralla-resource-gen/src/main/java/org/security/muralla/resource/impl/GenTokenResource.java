@@ -1,6 +1,8 @@
 package org.security.muralla.resource.impl;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -131,6 +133,9 @@ public class GenTokenResource {
 			OAuthResponse response = tokenService.createAccessTokenResponse(
 					authenticatedTokenRegistry.getUsername(), null);
 
+			List<String> roles = new ArrayList<String>(
+					authenticatedTokenRegistry.getRoles());
+			
 			// Save access token generated in the database
 			AccessTokenRegistry accessTokenRegistry = new AccessTokenRegistry(
 					request.getValue(OAuthUtils.OAUTH_NONCE),
@@ -143,7 +148,7 @@ public class GenTokenResource {
 					request.getValue(OAuthUtils.OAUTH_VERIFIER),
 					request.getValue(OAuthUtils.OAUTH_SIGNATURE),
 					response.getToken(),
-					authenticatedTokenRegistry.getRoles());
+					roles);
 			tokenService.saveAccessToken(accessTokenRegistry);
 
 			return Response.ok(response.toString()).build();
