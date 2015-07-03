@@ -4,7 +4,7 @@
 
 	<groupId>org.security.muralla</groupId>
 	<artifactId>muralla</artifactId>
-	<version>redhat-jboss-eap-6.2-libs-1.0.3-SNAPSHOT</version>
+	<version>redhat-jboss-eap-6.2-libs-1.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 
@@ -70,13 +70,13 @@
 			<dependency>
 				<groupId>org.security.muralla</groupId>
 				<artifactId>muralla-model</artifactId>
-				<version>redhat-jboss-eap-6.2-libs-1.0.3-SNAPSHOT</version>
+				<version>redhat-jboss-eap-6.2-libs-1.0.2-SNAPSHOT</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.security.muralla</groupId>
 				<artifactId>muralla-service</artifactId>
-				<version>redhat-jboss-eap-6.2-libs-1.0.3-SNAPSHOT</version>
+				<version>redhat-jboss-eap-6.2-libs-1.0.2-SNAPSHOT</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
